@@ -1,9 +1,9 @@
 import { ThemeProvider } from "@/components/theme-provider";
 import "./App.css";
-import Page from "./app/dashboard/page";
+import Page from "./app/dashboard/DashboardPage";
 import { Route, Routes } from "react-router-dom";
 import LayoutTemplate from "./app/LayoutTemplate";
-import ProductsPage from "./app/products/page";
+import ProductsPage from "./app/products/ProductPage";
 
 function App() {
   return (

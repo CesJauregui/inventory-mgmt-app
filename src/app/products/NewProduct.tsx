@@ -21,9 +21,10 @@ const formSchema = z.object({
   price: z.number(),
   stock: z.number(),
   category: z.string(),
+  image: z.string(),
 });
 
-export function ProfileForm() {
+export function NewProduct() {
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -33,6 +34,7 @@ export function ProfileForm() {
       price: 0.0,
       stock: 0,
       category: "",
+      image: "",
     },
   });
 
@@ -45,7 +47,10 @@ export function ProfileForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-4 md:space-y-8"
+      >
         <FormField
           control={form.control}
           name="name"
@@ -67,6 +72,63 @@ export function ProfileForm() {
               <FormLabel>Descripción</FormLabel>
               <FormControl>
                 <Input placeholder="Hojas blancas ..." {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <div className="grid grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="price"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Precio</FormLabel>
+                <FormControl>
+                  <Input placeholder="0.0" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="stock"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Stock</FormLabel>
+                <FormControl>
+                  <Input placeholder="0" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <FormField
+          control={form.control}
+          name="category"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Categoría</FormLabel>
+              <FormControl>
+                <Input placeholder="Accesorios" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="stock"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Imagen</FormLabel>
+              <FormControl>
+                <Input type="file" />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -1,0 +1,182 @@
+[
+  {
+    "id": 1,
+    "name": "Cuaderno A4 Liso",
+    "description": "Cuaderno de 100 hojas con tapa dura y hojas lisas. Cuaderno de 100 hojas con tapa dura y hojas lisas.",
+    "price": 12.5,
+    "stock": 45,
+    "category": "Papelería",
+    "image": "./src/assets/image.webp"
+  },
+  {
+    "id": 2,
+    "name": "Lápiz HB Faber-Castell",
+    "description": "Lápiz de grafito con goma incluida, ideal para escritura.",
+    "price": 1.2,
+    "stock": 200,
+    "category": "Escritura",
+    "image": "./src/assets/image.webp"
+  },
+  {
+    "id": 3,
+    "name": "Bolígrafo Azul Bic",
+    "description": "Bolígrafo con tinta azul de secado rápido.",
+    "price": 0.9,
+    "stock": 150,
+    "category": "Escritura",
+    "image": "./src/assets/image.webp"
+  },
+  {
+    "id": 4,
+    "name": "Marcador Permanente Negro",
+    "description": "Marcador de punta gruesa ideal para escribir sobre plástico o cartón.",
+    "price": 2.8,
+    "stock": 60,
+    "category": "Marcadores",
+    "image": "./src/assets/image.webp"
+  },
+  {
+    "id": 5,
+    "name": "Tijeras Escolares",
+    "description": "Tijeras con puntas redondeadas para uso escolar.",
+    "price": 3.0,
+    "stock": 35,
+    "category": "Accesorios",
+    "image": "./src/assets/image.webp"
+  },
+  {
+    "id": 6,
+    "name": "Resaltador Amarillo Stabilo",
+    "description": "Resaltador con tinta fluorescente y gran duración.",
+    "price": 2.5,
+    "stock": 80,
+    "category": "Marcadores",
+    "image": "./src/assets/image.webp"
+  },
+  {
+    "id": 7,
+    "name": "Regla de 30cm Transparente",
+    "description": "Regla de plástico resistente con medidas en cm y pulgadas.",
+    "price": 1.5,
+    "stock": 70,
+    "category": "Instrumentos",
+    "image": "./src/assets/image.webp"
+  },
+  {
+    "id": 8,
+    "name": "Compás Metálico con Mina",
+    "description": "Compás de precisión para dibujo técnico.",
+    "price": 6.0,
+    "stock": 25,
+    "category": "Instrumentos",
+    "image": "./src/assets/image.webp"
+  },
+  {
+    "id": 9,
+    "name": "Libro 'Cien Años de Soledad'",
+    "description": "Novela de Gabriel García Márquez, edición de bolsillo.",
+    "price": 18.9,
+    "stock": 20,
+    "category": "Libros",
+    "image": "./src/assets/image.webp"
+  },
+  {
+    "id": 10,
+    "name": "Libro 'El Principito'",
+    "description": "Edición ilustrada del clásico de Antoine de Saint-Exupéry.",
+    "price": 14.0,
+    "stock": 30,
+    "category": "Libros",
+    "image": "./src/assets/image.webp"
+  },
+  {
+    "id": 11,
+    "name": "Cartuchera Escolar",
+    "description": "Cartuchera con cierre y compartimentos múltiples.",
+    "price": 7.2,
+    "stock": 40,
+    "category": "Accesorios",
+    "image": "./src/assets/image.webp"
+  },
+  {
+    "id": 12,
+    "name": "Papel Bond A4 (500 hojas)",
+    "description": "Resma de papel bond blanco 75g.",
+    "price": 22.5,
+    "stock": 15,
+    "category": "Papelería",
+    "image": "./src/assets/image.webp"
+  },
+  {
+    "id": 13,
+    "name": "Pegamento en Barra 21g",
+    "description": "Pegamento sólido ideal para papel y cartón.",
+    "price": 2.0,
+    "stock": 95,
+    "category": "Accesorios",
+    "image": "./src/assets/image.webp"
+  },
+  {
+    "id": 14,
+    "name": "Corrector Líquido",
+    "description": "Corrector de alta cobertura con aplicador tipo brocha.",
+    "price": 2.7,
+    "stock": 50,
+    "category": "Escritura",
+    "image": "./src/assets/image.webp"
+  },
+  {
+    "id": 15,
+    "name": "Archivador A-Z",
+    "description": "Archivador de cartón forrado con anillas metálicas.",
+    "price": 5.8,
+    "stock": 30,
+    "category": "Organización",
+    "image": "./src/assets/image.webp"
+  },
+  {
+    "id": 16,
+    "name": "Pizarra Blanca Pequeña",
+    "description": "Pizarra para marcadores borrables, tamaño escolar.",
+    "price": 8.5,
+    "stock": 18,
+    "category": "Material Didáctico",
+    "image": "./src/assets/image.webp"
+  },
+  {
+    "id": 17,
+    "name": "Libro '1984'",
+    "description": "Novela distópica de George Orwell, edición económica.",
+    "price": 16.3,
+    "stock": 22,
+    "category": "Libros",
+    "image": "./src/assets/image.webp"
+  },
+  {
+    "id": 18,
+    "name": "Set de Colores Prismacolor (12 unidades)",
+    "description": "Lápices de colores de alta calidad.",
+    "price": 10.5,
+    "stock": 34,
+    "category": "Arte",
+    "image": "./src/assets/image.webp"
+  },
+  {
+    "id": 19,
+    "name": "Cuaderno Cuadriculado 80 hojas",
+    "description": "Cuaderno A5 cuadriculado, ideal para matemáticas.",
+    "price": 9.0,
+    "stock": 55,
+    "category": "Papelería",
+    "image": "./src/assets/image.webp"
+  },
+  {
+    "id": 20,
+    "name": "Separadores de Cartulina",
+    "description": "Set de 10 separadores multicolor tamaño A4.",
+    "price": 3.4,
+    "stock": 60,
+    "category": "Organización",
+    "image": "./src/assets/image.webp"
+  }
+]
