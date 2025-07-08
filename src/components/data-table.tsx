@@ -131,6 +131,11 @@ export function DataTable({
     useSensor(TouchSensor, {}),
     useSensor(KeyboardSensor, {})
   );
+
+  React.useEffect(() => {
+    setData(initialData);
+  }, [initialData]);
+
   const dataIds = React.useMemo<UniqueIdentifier[]>(
     () => data?.map(({ id }) => id) || [],
     [data]

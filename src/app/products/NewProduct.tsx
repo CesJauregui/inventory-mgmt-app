@@ -14,6 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { createProduct } from "@/services/products";
 
 const formSchema = z.object({
   name: z.string().min(2).max(50),
@@ -24,9 +25,14 @@ const formSchema = z.object({
   image: z.string(),
 });
 
-export function NewProduct() {
-  // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
+type Product = z.infer<typeof formSchema>;
+
+interface NewProductProps {
+  onProductCreated: (product: Product) => void;
+}
+
+export function NewProduct({ onProductCreated }: NewProductProps) {
+  const form = useForm<Product>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
@@ -34,14 +40,20 @@ export function NewProduct() {
       price: 0.0,
       stock: 0,
       category: "",
-      image: "",
+      image: "./src/assets/image.webp",
     },
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+  function onSubmit(values: Product) {
+    try {
+      createProduct(values).then((res) => {
+        onProductCreated(res.data ?? values);
+      });
+      alert("Producto creado correctamente");
+      form.reset();
+    } catch (error) {
+      console.error("Error al crear producto", error);
+    }
     console.log(values);
   }
 
@@ -85,7 +97,13 @@ export function NewProduct() {
               <FormItem>
                 <FormLabel>Precio</FormLabel>
                 <FormControl>
-                  <Input placeholder="0.0" {...field} />
+                  <Input
+                    placeholder="0.0"
+                    type="number"
+                    {...field}
+                    value={field.value ?? ""}
+                    onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -99,7 +117,13 @@ export function NewProduct() {
               <FormItem>
                 <FormLabel>Stock</FormLabel>
                 <FormControl>
-                  <Input placeholder="0" {...field} />
+                  <Input
+                    placeholder="0"
+                    type="number"
+                    {...field}
+                    value={field.value ?? ""}
+                    onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -123,8 +147,8 @@ export function NewProduct() {
 
         <FormField
           control={form.control}
-          name="stock"
-          render={({ field }) => (
+          name="image"
+          render={() => (
             <FormItem>
               <FormLabel>Imagen</FormLabel>
               <FormControl>
