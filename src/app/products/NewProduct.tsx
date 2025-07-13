@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,16 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { createProduct } from "@/services/products";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import React, { useEffect } from "react";
+import { getCategories } from "@/services/categories";
 
 const formSchema = z.object({
   name: z.string().min(2).max(50),
@@ -22,6 +32,7 @@ const formSchema = z.object({
   price: z.number(),
   stock: z.number(),
   category: z.string(),
+  brand: z.string(),
   image: z.string(),
 });
 
@@ -40,9 +51,12 @@ export function NewProduct({ onProductCreated }: NewProductProps) {
       price: 0.0,
       stock: 0,
       category: "",
+      brand: "",
       image: "./src/assets/image.webp",
     },
   });
+
+  const [categories, setCategories] = React.useState<any[]>([]);
 
   function onSubmit(values: Product) {
     try {
@@ -56,6 +70,24 @@ export function NewProduct({ onProductCreated }: NewProductProps) {
     }
     console.log(values);
   }
+  useEffect(() => {
+    getCategories().then((res) => {
+      setCategories(res.data);
+    });
+  }, []);
+
+  const options = categories.map((category) => ({
+    id: category.id,
+    value: category.name,
+    label: category.name,
+  }));
+
+  // dummy
+  const brands = [
+    { value: "faber-castel", label: "Faber Castel" },
+    { value: "alpha", label: "Alpha" },
+    { value: "artesco", label: "Artesco" },
+  ];
 
   return (
     <Form {...form}>
@@ -130,21 +162,52 @@ export function NewProduct({ onProductCreated }: NewProductProps) {
             )}
           />
         </div>
-
-        <FormField
-          control={form.control}
-          name="category"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Categoría</FormLabel>
-              <FormControl>
-                <Input placeholder="Accesorios" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
+        <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-col gap-3">
+            <Label htmlFor="category">Categoría</Label>
+            <Controller
+              name="category"
+              control={form.control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Seleccione una categoría" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {options.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </div>
+          <div className="flex flex-col gap-3">
+            <Label htmlFor="brand">Marca</Label>
+            <Controller
+              name="brand"
+              control={form.control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Seleccione una marca" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {brands.map((option) => (
+                      <SelectItem key={option.value} value={option.label}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </div>
+        </div>
         <FormField
           control={form.control}
           name="image"

@@ -14,22 +14,32 @@ import {
 import { Form, FormField } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { getCategories } from "@/services/categories";
 import { updateProduct } from "@/services/products";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
-import { useForm } from "react-hook-form";
+import React, { useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
 const schema = z.object({
   id: z.number(),
+  codeSKU: z.string(),
   name: z.string(),
   description: z.string(),
   price: z.number(),
   stock: z.number(),
   category: z.string(),
+  brand: z.string(),
   image: z.string(),
 });
 type Product = z.infer<typeof schema>;
@@ -52,8 +62,13 @@ export default function EditProduct({
   //1. Define your form.
   const form = useForm<Product>({
     resolver: zodResolver(schema),
-    defaultValues: item,
+    defaultValues: {
+      ...item,
+      category: item.category || "Selecciona una categoria",
+    },
   });
+
+  const [categories, setCategories] = React.useState<any[]>([]);
 
   React.useEffect(() => {
     form.reset(item);
@@ -71,6 +86,25 @@ export default function EditProduct({
       console.error("Error al crear producto", error);
     }
   }
+
+  useEffect(() => {
+    getCategories().then((res) => {
+      setCategories(res.data);
+    });
+  }, []);
+
+  const options = categories.map((category) => ({
+    id: category.id,
+    value: category.name,
+    label: category.name,
+  }));
+
+  //dummy
+  const brands = [
+    { value: "faber-castel", label: "Faber Castel" },
+    { value: "alpha", label: "Alpha" },
+    { value: "artesco", label: "Artesco" },
+  ];
 
   return (
     <Drawer
@@ -90,7 +124,7 @@ export default function EditProduct({
                   Editar Producto
                 </DrawerTitle>
                 <DrawerDescription>
-                  Modificar información del producto
+                  Código SKU: {item.codeSKU}
                 </DrawerDescription>
                 <Avatar className="w-[200px] h-auto m-auto rounded-full">
                   <AvatarImage className="" src={item.image} />
@@ -149,16 +183,58 @@ export default function EditProduct({
                   )}
                 />
               </div>
-              <FormField
-                control={form.control}
-                name="category"
-                render={({ field }) => (
-                  <div className="flex flex-col gap-3">
-                    <Label htmlFor="category">Categoria</Label>
-                    <Input id="category" {...field} />
-                  </div>
-                )}
-              />
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex flex-col gap-3">
+                  <Label htmlFor="category">Categoría</Label>
+                  <Controller
+                    name="category"
+                    control={form.control}
+                    rules={{ required: true }}
+                    render={({ field }) => (
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Seleccione una categoría" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {options.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                </div>
+                <div className="flex flex-col gap-3">
+                  <Label htmlFor="brand">Marca</Label>
+                  <Controller
+                    name="brand"
+                    control={form.control}
+                    rules={{ required: true }}
+                    render={({ field }) => (
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Seleccione una marca" />
+                        </SelectTrigger>
+                        <SelectContent id="brand">
+                          {brands.map((option) => (
+                            <SelectItem key={option.value} value={option.label}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                </div>
+              </div>
               <DrawerFooter>
                 <Button type="submit">Guardar</Button>
                 <DrawerClose asChild>

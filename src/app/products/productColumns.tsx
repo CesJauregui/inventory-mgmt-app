@@ -70,6 +70,11 @@ export function productColumns(
       enableHiding: false,
     },
     {
+      accessorKey: "codeSKU",
+      header: "Código SKU",
+      cell: ({ row }) => row.original.codeSKU,
+    },
+    {
       accessorKey: "name",
       header: "Nombre",
       cell: ({ row }) => row.original.name,
@@ -88,6 +93,11 @@ export function productColumns(
       accessorKey: "category",
       header: "Categoría",
       cell: ({ row }) => row.original.category,
+    },
+    {
+      accessorKey: "brand",
+      header: "Marca",
+      cell: ({ row }) => row.original.brand,
     },
     {
       id: "actions",
