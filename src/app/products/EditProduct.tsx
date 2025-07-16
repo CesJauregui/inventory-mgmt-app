@@ -38,7 +38,10 @@ const schema = z.object({
   description: z.string(),
   price: z.number(),
   stock: z.number(),
-  category: z.string(),
+  category: z.object({
+    id: z.number(),
+    name: z.string(),
+  }),
   brand: z.string(),
   image: z.string(),
 });
@@ -64,7 +67,7 @@ export default function EditProduct({
     resolver: zodResolver(schema),
     defaultValues: {
       ...item,
-      category: item.category || "Selecciona una categoria",
+      category: item.category || { id: 0, name: "" },
     },
   });
 
@@ -192,16 +195,24 @@ export default function EditProduct({
                     rules={{ required: true }}
                     render={({ field }) => (
                       <Select
-                        value={field.value}
-                        onValueChange={field.onChange}
+                        value={field.value?.id?.toString() || ""}
+                        onValueChange={(selectedId) => {
+                          const selectedCategory = categories.find(
+                            (cat) => cat.id.toString() === selectedId
+                          );
+                          field.onChange(selectedCategory);
+                        }}
                       >
                         <SelectTrigger className="w-full">
                           <SelectValue placeholder="Seleccione una categoría" />
                         </SelectTrigger>
                         <SelectContent>
-                          {options.map((option) => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
+                          {categories.map((category) => (
+                            <SelectItem
+                              key={category.id}
+                              value={category.id.toString()}
+                            >
+                              {category.name}
                             </SelectItem>
                           ))}
                         </SelectContent>

@@ -58,7 +58,7 @@ const data = {
     },
     {
       title: "Categorías",
-      url: "/categorías",
+      url: "/categorias",
       icon: IconListDetails,
     },
   ],

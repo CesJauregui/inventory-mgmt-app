@@ -3,6 +3,8 @@ import { NewProduct } from "./NewProduct";
 import { productColumns } from "./productColumns";
 import { useEffect, useState } from "react";
 import { getProducts } from "@/services/products";
+import { Button } from "@/components/ui/button";
+import { IconPlus } from "@tabler/icons-react";
 
 export default function ListProducts() {
   const [product, setProduct] = useState<any[]>([]);
@@ -35,6 +37,12 @@ export default function ListProducts() {
       columns={productColumns(handleProductUpdated, handleProductDeleted)}
       sectionName="producto"
       formModal={<NewProduct onProductCreated={handleProductCreated} />}
+      children={
+        <Button variant="outline" size="sm">
+          <IconPlus />
+          <span className="hidden lg:inline">Agregar producto</span>
+        </Button>
+      }
     />
   );
 }

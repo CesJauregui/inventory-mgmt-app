@@ -105,6 +105,7 @@ interface DataTableProps {
   columns: ColumnDef<GenericItem>[];
   sectionName: string;
   formModal: React.ReactNode;
+  children: React.ReactNode;
 }
 
 export function DataTable({
@@ -112,6 +113,7 @@ export function DataTable({
   columns,
   sectionName,
   formModal,
+  children,
 }: DataTableProps) {
   const [data, setData] = React.useState(() => initialData);
   const [rowSelection, setRowSelection] = React.useState({});
@@ -196,12 +198,7 @@ export function DataTable({
 
         <div className="flex items-center gap-2">
           <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-              <Button variant="outline" size="sm">
-                <IconPlus />
-                <span className="hidden lg:inline">Agregar {sectionName}</span>
-              </Button>
-            </DialogTrigger>
+            <DialogTrigger asChild>{children}</DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
                 <DialogTitle>Nuevo {sectionName}</DialogTitle>

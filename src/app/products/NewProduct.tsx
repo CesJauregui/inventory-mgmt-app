@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
+import { number, z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -31,7 +31,10 @@ const formSchema = z.object({
   description: z.string(),
   price: z.number(),
   stock: z.number(),
-  category: z.string(),
+  category: z.object({
+    id: z.number(),
+    name: z.string(),
+  }),
   brand: z.string(),
   image: z.string(),
 });
@@ -50,7 +53,7 @@ export function NewProduct({ onProductCreated }: NewProductProps) {
       description: "",
       price: 0.0,
       stock: 0,
-      category: "",
+      category: undefined,
       brand: "",
       image: "./src/assets/image.webp",
     },
@@ -170,14 +173,25 @@ export function NewProduct({ onProductCreated }: NewProductProps) {
               control={form.control}
               rules={{ required: true }}
               render={({ field }) => (
-                <Select value={field.value} onValueChange={field.onChange}>
+                <Select
+                  value={field.value?.id?.toString() ?? ""}
+                  onValueChange={(selectedId) => {
+                    const selectedCategory = categories.find(
+                      (cat) => cat.id.toString() === selectedId
+                    );
+                    field.onChange(selectedCategory);
+                  }}
+                >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Seleccione una categoría" />
                   </SelectTrigger>
                   <SelectContent>
-                    {options.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
+                    {categories.map((category) => (
+                      <SelectItem
+                        key={category.id}
+                        value={category.id.toString()}
+                      >
+                        {category.name}
                       </SelectItem>
                     ))}
                   </SelectContent>

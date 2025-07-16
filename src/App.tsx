@@ -4,6 +4,7 @@ import Page from "./app/dashboard/DashboardPage";
 import { Route, Routes } from "react-router-dom";
 import LayoutTemplate from "./app/LayoutTemplate";
 import ProductsPage from "./app/products/ProductPage";
+import CategoryPage from "./app/categories/CategoryPage";
 
 function App() {
   return (
@@ -22,6 +23,14 @@ function App() {
           element={
             <LayoutTemplate>
               <ProductsPage />
+            </LayoutTemplate>
+          }
+        />
+        <Route
+          path="/categorias"
+          element={
+            <LayoutTemplate>
+              <CategoryPage />
             </LayoutTemplate>
           }
         />

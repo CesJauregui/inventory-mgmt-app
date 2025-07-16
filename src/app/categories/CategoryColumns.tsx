@@ -4,19 +4,19 @@ import { Button } from "@/components/ui/button";
 
 import { Checkbox } from "@/components/ui/checkbox";
 
-import EditProduct from "./EditProduct";
 import React from "react";
 import { PencilIcon, Trash2Icon } from "lucide-react";
-import { deleteProduct } from "@/services/products";
+import { deleteCategory } from "@/services/categories";
+import EditCategory from "./EditCategory";
 
-function EditProductDrawer({
+function EditCategoryDrawer({
   item,
   trigger,
-  handleProductUpdated,
+  handleCategoryUpdated,
 }: {
   item: any;
   trigger: React.ReactNode;
-  handleProductUpdated: (product: any) => void;
+  handleCategoryUpdated: (category: any) => void;
 }) {
   const [open, setOpen] = React.useState(false);
   return (
@@ -25,20 +25,20 @@ function EditProductDrawer({
         {trigger}
       </span>
       {open && (
-        <EditProduct
+        <EditCategory
           item={item}
           open={open}
           setOpen={setOpen}
-          onProductUpdated={handleProductUpdated}
+          onCategoryUpdated={handleCategoryUpdated}
         />
       )}
     </>
   );
 }
 
-export function productColumns(
-  handleProductUpdated: (product: any) => void,
-  handleProductDeleted: (id: number) => void
+export function categoryColumns(
+  handleCategoryUpdated: (category: any) => void,
+  handleCategoryDeleted: (id: number) => void
 ): ColumnDef<GenericItem>[] {
   return [
     {
@@ -70,9 +70,9 @@ export function productColumns(
       enableHiding: false,
     },
     {
-      accessorKey: "codeSKU",
-      header: "Código SKU",
-      cell: ({ row }) => row.original.codeSKU,
+      accessorKey: "id",
+      header: "Código Categoría",
+      cell: ({ row }) => "CAT_" + row.original.id,
     },
     {
       accessorKey: "name",
@@ -80,24 +80,9 @@ export function productColumns(
       cell: ({ row }) => row.original.name,
     },
     {
-      accessorKey: "price",
-      header: "Precio",
-      cell: ({ row }) => `$${row.original.price}`,
-    },
-    {
-      accessorKey: "stock",
-      header: "Stock",
-      cell: ({ row }) => row.original.stock,
-    },
-    {
-      accessorKey: "category",
-      header: "Categoría",
-      cell: ({ row }) => row.original.category.name,
-    },
-    {
-      accessorKey: "brand",
-      header: "Marca",
-      cell: ({ row }) => row.original.brand,
+      accessorKey: "products",
+      header: "Cantidad de productos",
+      cell: ({ row }) => row.original.products,
     },
     {
       id: "actions",
@@ -105,22 +90,22 @@ export function productColumns(
       cell: ({ row }) => (
         <div className="flex gap-2">
           <div>
-            <EditProductDrawer
+            <EditCategoryDrawer
               item={row.original}
               trigger={
                 <Button variant="default" className="text-start">
                   <PencilIcon />
                 </Button>
               }
-              handleProductUpdated={handleProductUpdated}
+              handleCategoryUpdated={handleCategoryUpdated}
             />
           </div>
           <Button
             type="button"
             variant="destructive"
             onClick={() => {
-              deleteProduct(row.original.id);
-              handleProductDeleted(row.original.id);
+              deleteCategory(row.original.id);
+              handleCategoryDeleted(row.original.id);
             }}
           >
             <Trash2Icon />
