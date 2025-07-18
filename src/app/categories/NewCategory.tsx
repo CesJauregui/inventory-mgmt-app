@@ -26,7 +26,7 @@ interface NewCategoryProps {
   onCategoryCreated: (category: Category) => void;
 }
 
-export function NewCategory() {
+export function NewCategory({ onCategoryCreated }: NewCategoryProps) {
   const form = useForm<Category>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -37,6 +37,7 @@ export function NewCategory() {
   function onSubmit(values: Category) {
     try {
       createCategory(values).then((res) => {
+        onCategoryCreated(res.data ?? values);
         alert("Categoría creada correctamente");
       });
       form.reset();

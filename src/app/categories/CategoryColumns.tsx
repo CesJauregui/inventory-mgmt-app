@@ -5,9 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 
 import React from "react";
-import { PencilIcon, Trash2Icon } from "lucide-react";
+import { AlertCircle, PencilIcon, Trash2Icon } from "lucide-react";
 import { deleteCategory } from "@/services/categories";
 import EditCategory from "./EditCategory";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 function EditCategoryDrawer({
   item,
@@ -82,11 +87,25 @@ export function categoryColumns(
     {
       accessorKey: "products",
       header: "Cantidad de productos",
-      cell: ({ row }) => row.original.products,
+      cell: ({ row }) => row.original.total,
     },
     {
       id: "actions",
-      header: "Acciones",
+      header: () => (
+        <Tooltip>
+          <div className="flex flex-row items-center gap-3">
+            <span>Acciones</span>
+            <TooltipTrigger asChild>
+              <AlertCircle className="cursor-pointer" size={16} />
+            </TooltipTrigger>
+            <TooltipContent>
+              <span>
+                Categoría con productos asociados no se puede eliminar.
+              </span>
+            </TooltipContent>
+          </div>
+        </Tooltip>
+      ),
       cell: ({ row }) => (
         <div className="flex gap-2">
           <div>
@@ -103,9 +122,18 @@ export function categoryColumns(
           <Button
             type="button"
             variant="destructive"
+            disabled={row.original.total >= 1}
             onClick={() => {
-              deleteCategory(row.original.id);
-              handleCategoryDeleted(row.original.id);
+              if (row.original.total >= 1) {
+                alert(
+                  "La categoría está asignado a " +
+                    row.original.total +
+                    " producto(s)."
+                );
+              } else {
+                deleteCategory(row.original.id);
+                handleCategoryDeleted(row.original.id);
+              }
             }}
           >
             <Trash2Icon />

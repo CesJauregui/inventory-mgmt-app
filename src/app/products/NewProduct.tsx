@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import { number, z } from "zod";
+import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -78,12 +78,6 @@ export function NewProduct({ onProductCreated }: NewProductProps) {
       setCategories(res.data);
     });
   }, []);
-
-  const options = categories.map((category) => ({
-    id: category.id,
-    value: category.name,
-    label: category.name,
-  }));
 
   // dummy
   const brands = [
