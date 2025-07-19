@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import LayoutTemplate from "./app/LayoutTemplate";
 import ProductsPage from "./app/products/ProductPage";
 import CategoryPage from "./app/categories/CategoryPage";
+import BrandPage from "./app/brands/BrandPage";
 
 function App() {
   return (
@@ -31,6 +32,14 @@ function App() {
           element={
             <LayoutTemplate>
               <CategoryPage />
+            </LayoutTemplate>
+          }
+        />
+        <Route
+          path="/marcas"
+          element={
+            <LayoutTemplate>
+              <BrandPage />
             </LayoutTemplate>
           }
         />

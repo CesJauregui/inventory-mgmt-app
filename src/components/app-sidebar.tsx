@@ -47,11 +47,6 @@ const data = {
       icon: IconShoppingCart,
     },
     {
-      title: "Stock",
-      url: "/stocks",
-      icon: IconBrandUnsplash,
-    },
-    {
       title: "Proveedores",
       url: "/proveedores",
       icon: IconUsersGroup,
@@ -60,6 +55,11 @@ const data = {
       title: "Categorías",
       url: "/categorias",
       icon: IconListDetails,
+    },
+    {
+      title: "Marcas",
+      url: "/marcas",
+      icon: IconBrandUnsplash,
     },
   ],
   navClouds: [

@@ -4,19 +4,24 @@ import { Button } from "@/components/ui/button";
 
 import { Checkbox } from "@/components/ui/checkbox";
 
-import EditProduct from "./EditProduct";
 import React from "react";
-import { PencilIcon, Trash2Icon } from "lucide-react";
-import { deleteProduct } from "@/services/products";
+import { AlertCircle, PencilIcon, Trash2Icon } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import EditBrand from "./EditBrand";
+import { deleteBrand } from "@/services/brands";
 
-function EditProductDrawer({
+function EditBrandDrawer({
   item,
   trigger,
-  handleProductUpdated,
+  handleBrandUpdated,
 }: {
   item: any;
   trigger: React.ReactNode;
-  handleProductUpdated: (product: any) => void;
+  handleBrandUpdated: (Brand: any) => void;
 }) {
   const [open, setOpen] = React.useState(false);
   return (
@@ -25,20 +30,20 @@ function EditProductDrawer({
         {trigger}
       </span>
       {open && (
-        <EditProduct
+        <EditBrand
           item={item}
           open={open}
           setOpen={setOpen}
-          onProductUpdated={handleProductUpdated}
+          onBrandUpdated={handleBrandUpdated}
         />
       )}
     </>
   );
 }
 
-export function productColumns(
-  handleProductUpdated: (product: any) => void,
-  handleProductDeleted: (id: number) => void
+export function brandColumns(
+  handleBrandUpdated: (brand: any) => void,
+  handleBrandDeleted: (id: number) => void
 ): ColumnDef<GenericItem>[] {
   return [
     {
@@ -70,9 +75,9 @@ export function productColumns(
       enableHiding: false,
     },
     {
-      accessorKey: "codeSKU",
-      header: "Código SKU",
-      cell: ({ row }) => row.original.codeSKU,
+      accessorKey: "id",
+      header: "Código Marca",
+      cell: ({ row }) => "BRN_" + row.original.id,
     },
     {
       accessorKey: "name",
@@ -80,47 +85,53 @@ export function productColumns(
       cell: ({ row }) => row.original.name,
     },
     {
-      accessorKey: "price",
-      header: "Precio",
-      cell: ({ row }) => `$${row.original.price}`,
-    },
-    {
-      accessorKey: "stock",
-      header: "Stock",
-      cell: ({ row }) => row.original.stock,
-    },
-    {
-      accessorKey: "category",
-      header: "Categoría",
-      cell: ({ row }) => row.original.category.name,
-    },
-    {
-      accessorKey: "brand",
-      header: "Marca",
-      cell: ({ row }) => row.original.brand.name,
+      accessorKey: "products",
+      header: "Cantidad de productos",
+      cell: ({ row }) => row.original.total,
     },
     {
       id: "actions",
-      header: "Acciones",
+      header: () => (
+        <Tooltip>
+          <div className="flex flex-row items-center gap-3">
+            <span>Acciones</span>
+            <TooltipTrigger asChild>
+              <AlertCircle className="cursor-pointer" size={16} />
+            </TooltipTrigger>
+            <TooltipContent>
+              <span>Marca con productos asociados no se puede eliminar.</span>
+            </TooltipContent>
+          </div>
+        </Tooltip>
+      ),
       cell: ({ row }) => (
         <div className="flex gap-2">
           <div>
-            <EditProductDrawer
+            <EditBrandDrawer
               item={row.original}
               trigger={
                 <Button variant="default" className="text-start">
                   <PencilIcon />
                 </Button>
               }
-              handleProductUpdated={handleProductUpdated}
+              handleBrandUpdated={handleBrandUpdated}
             />
           </div>
           <Button
             type="button"
             variant="destructive"
+            disabled={row.original.total >= 1}
             onClick={() => {
-              deleteProduct(row.original.id);
-              handleProductDeleted(row.original.id);
+              if (row.original.total >= 1) {
+                alert(
+                  "La marca está asignado a " +
+                    row.original.total +
+                    " producto(s)."
+                );
+              } else {
+                deleteBrand(row.original.id);
+                handleBrandDeleted(row.original.id);
+              }
             }}
           >
             <Trash2Icon />

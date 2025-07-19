@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/select";
 import React, { useEffect } from "react";
 import { getCategories } from "@/services/categories";
+import { getBrands } from "@/services/brands";
 
 const formSchema = z.object({
   name: z.string().min(2).max(50),
@@ -35,7 +36,10 @@ const formSchema = z.object({
     id: z.number(),
     name: z.string(),
   }),
-  brand: z.string(),
+  brand: z.object({
+    id: z.number(),
+    name: z.string(),
+  }),
   image: z.string(),
 });
 
@@ -54,12 +58,13 @@ export function NewProduct({ onProductCreated }: NewProductProps) {
       price: 0.0,
       stock: 0,
       category: undefined,
-      brand: "",
+      brand: undefined,
       image: "./src/assets/image.webp",
     },
   });
 
   const [categories, setCategories] = React.useState<any[]>([]);
+  const [brands, setBrands] = React.useState<any[]>([]);
 
   function onSubmit(values: Product) {
     try {
@@ -79,12 +84,11 @@ export function NewProduct({ onProductCreated }: NewProductProps) {
     });
   }, []);
 
-  // dummy
-  const brands = [
-    { value: "faber-castel", label: "Faber Castel" },
-    { value: "alpha", label: "Alpha" },
-    { value: "artesco", label: "Artesco" },
-  ];
+  useEffect(() => {
+    getBrands().then((res) => {
+      setBrands(res.data);
+    });
+  }, []);
 
   return (
     <Form {...form}>
@@ -200,14 +204,22 @@ export function NewProduct({ onProductCreated }: NewProductProps) {
               control={form.control}
               rules={{ required: true }}
               render={({ field }) => (
-                <Select value={field.value} onValueChange={field.onChange}>
+                <Select
+                  value={field.value?.id?.toString() ?? ""}
+                  onValueChange={(selectedId) => {
+                    const selectedBrand = brands.find(
+                      (bra) => bra.id.toString() === selectedId
+                    );
+                    field.onChange(selectedBrand);
+                  }}
+                >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Seleccione una marca" />
                   </SelectTrigger>
                   <SelectContent>
-                    {brands.map((option) => (
-                      <SelectItem key={option.value} value={option.label}>
-                        {option.label}
+                    {brands.map((brand) => (
+                      <SelectItem key={brand.id} value={brand.id.toString()}>
+                        {brand.name}
                       </SelectItem>
                     ))}
                   </SelectContent>

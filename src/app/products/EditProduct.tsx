@@ -24,6 +24,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { getBrands } from "@/services/brands";
 import { getCategories } from "@/services/categories";
 import { updateProduct } from "@/services/products";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -42,7 +43,10 @@ const schema = z.object({
     id: z.number(),
     name: z.string(),
   }),
-  brand: z.string(),
+  brand: z.object({
+    id: z.number(),
+    name: z.string(),
+  }),
   image: z.string(),
 });
 type Product = z.infer<typeof schema>;
@@ -68,10 +72,12 @@ export default function EditProduct({
     defaultValues: {
       ...item,
       category: item.category || { id: 0, name: "" },
+      brand: item.brand || { id: 0, name: "" },
     },
   });
 
   const [categories, setCategories] = React.useState<any[]>([]);
+  const [brands, setBrands] = React.useState<any[]>([]);
 
   React.useEffect(() => {
     form.reset(item);
@@ -96,18 +102,11 @@ export default function EditProduct({
     });
   }, []);
 
-  const options = categories.map((category) => ({
-    id: category.id,
-    value: category.name,
-    label: category.name,
-  }));
-
-  //dummy
-  const brands = [
-    { value: "faber-castel", label: "Faber Castel" },
-    { value: "alpha", label: "Alpha" },
-    { value: "artesco", label: "Artesco" },
-  ];
+  useEffect(() => {
+    getBrands().then((res) => {
+      setBrands(res.data);
+    });
+  }, []);
 
   return (
     <Drawer
@@ -228,16 +227,24 @@ export default function EditProduct({
                     rules={{ required: true }}
                     render={({ field }) => (
                       <Select
-                        value={field.value}
-                        onValueChange={field.onChange}
+                        value={field.value?.id?.toString() || ""}
+                        onValueChange={(selectedId) => {
+                          const selectedBrand = categories.find(
+                            (bra) => bra.id.toString() === selectedId
+                          );
+                          field.onChange(selectedBrand);
+                        }}
                       >
                         <SelectTrigger className="w-full">
                           <SelectValue placeholder="Seleccione una marca" />
                         </SelectTrigger>
                         <SelectContent id="brand">
-                          {brands.map((option) => (
-                            <SelectItem key={option.value} value={option.label}>
-                              {option.label}
+                          {brands.map((brand) => (
+                            <SelectItem
+                              key={brand.id}
+                              value={brand.id.toString()}
+                            >
+                              {brand.name}
                             </SelectItem>
                           ))}
                         </SelectContent>
