@@ -184,14 +184,20 @@ export function NewProduct({ onProductCreated }: NewProductProps) {
                     <SelectValue placeholder="Seleccione una categoría" />
                   </SelectTrigger>
                   <SelectContent>
-                    {categories.map((category) => (
-                      <SelectItem
-                        key={category.id}
-                        value={category.id.toString()}
-                      >
-                        {category.name}
-                      </SelectItem>
-                    ))}
+                    {categories.length != 0 ? (
+                      categories.map((category) => (
+                        <SelectItem
+                          key={category.id}
+                          value={category.id.toString()}
+                        >
+                          {category.name}
+                        </SelectItem>
+                      ))
+                    ) : (
+                      <span className="p-1 text-[13px]">
+                        No hay categorías registradas
+                      </span>
+                    )}
                   </SelectContent>
                 </Select>
               )}
@@ -217,11 +223,17 @@ export function NewProduct({ onProductCreated }: NewProductProps) {
                     <SelectValue placeholder="Seleccione una marca" />
                   </SelectTrigger>
                   <SelectContent>
-                    {brands.map((brand) => (
-                      <SelectItem key={brand.id} value={brand.id.toString()}>
-                        {brand.name}
-                      </SelectItem>
-                    ))}
+                    {brands.length != 0 ? (
+                      brands.map((brand) => (
+                        <SelectItem key={brand.id} value={brand.id.toString()}>
+                          {brand.name}
+                        </SelectItem>
+                      ))
+                    ) : (
+                      <span className="p-1 text-[13px]">
+                        No hay marcas registradas
+                      </span>
+                    )}
                   </SelectContent>
                 </Select>
               )}

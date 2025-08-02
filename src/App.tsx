@@ -6,6 +6,7 @@ import LayoutTemplate from "./app/LayoutTemplate";
 import ProductsPage from "./app/products/ProductPage";
 import CategoryPage from "./app/categories/CategoryPage";
 import BrandPage from "./app/brands/BrandPage";
+import SupplierPage from "./app/suppliers/SupplierPage";
 
 function App() {
   return (
@@ -24,6 +25,14 @@ function App() {
           element={
             <LayoutTemplate>
               <ProductsPage />
+            </LayoutTemplate>
+          }
+        />
+        <Route
+          path="/proveedores"
+          element={
+            <LayoutTemplate>
+              <SupplierPage />
             </LayoutTemplate>
           }
         />
